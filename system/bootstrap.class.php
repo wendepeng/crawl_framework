@@ -1,7 +1,13 @@
 <?php
-include(dirname(__FILE__).'/load.php');
+/**
+ *入口文件，万物之始！
+ */
 
-$crawler = new Crawler();
+define('APP_PATH', dirname(__FILE__));
+require_once(dirname(__FILE__).'/../system/load.php');
+require_once(dirname(__FILE__).'/crawler.class.php');
+
+$crawler = new MyCrawler();
 $crawler->enableResumption();
 $crawler->setWorkingDirectory(WORk_DIR);
 $crawler->setUrlCacheType(PHPCrawlerUrlCacheTypes::URLCACHE_SQLITE);
@@ -24,7 +30,9 @@ if (!file_exists($guid_file))
 
 $crawler->setURL(WEBSITE_START_URL);
 
-// $crawler->addPostData("#http:\/\/www\.zhihu\.com\/login\/email#", array("email" => "970211002@qq.com", "password" => "5iportal", "remember_me" => "true", "_xsrf" => "3b8cca8ee8dbf02766603569e199ffe4"));
+if(WEBSITE_LOGIN_ENABLE){
+	$crawler->addPostData($config['website']['login_url_regex'], $config['website']['login_data']);
+}
 
 $crawler->addContentTypeReceiveRule("#text/html#");
 
@@ -47,24 +55,6 @@ echo "Links followed: ".$report->links_followed.$lb;
 echo "Documents received: ".$report->files_received.$lb;
 echo "Bytes received: ".$report->bytes_received." bytes".$lb;
 echo "Process runtime: ".$report->process_runtime." sec".$lb; 
-
-if ($report->abort_reason == 1){
-  echo "Abort reason: ABORTREASON_PASSEDTHROUGH"; 
-}else{
-  echo "Abort reason: ".$report->abort_reason; 
-}
-
-
-
-//解析并保存网页信息
-function save_page($DocInfo){
-    global $redis;
-    $url = $DocInfo->url;
-    $content = $DocInfo->content;
-
-    
-    $redis = $redis->lpush('crawl_zhihu',json_encode(array('url' => $url, 'content' => $content ))); 
-}
-
+echo "Abort reason: ".$report->abort_reason; 
 
 ?>
