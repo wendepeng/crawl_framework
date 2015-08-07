@@ -79,5 +79,9 @@ class SQLite
 	}
 }
 
-$sqlite = new SQLite(BASE_PATH.'/data/data.sqlite');
+if(!is_dir(DATA_PATH.'/'.WEBSITE_NAME)){
+	@mkdir(DATA_PATH.'/'.WEBSITE_NAME);
+}
+
+$sqlite = new SQLite(DATA_PATH.'/'.WEBSITE_NAME.'/data.sqlite');
 ?>

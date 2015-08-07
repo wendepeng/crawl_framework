@@ -3,12 +3,10 @@
  *加载配置文件和使用魔术方法加载model类和Crawler类
  */
 define('BASE_PATH', dirname(__FILE__));
-define('SYSTEM_PATH', dirname(__FILE__).'../system');
-define('DATA_PATH', dirname(__FILE__).'../data');
+define('SYSTEM_PATH', dirname(__FILE__).'/../system');
+define('DATA_PATH', dirname(__FILE__).'/../data');
 
 $config = require_once(BASE_PATH.'/config.php');
-
-require_once(SYSTEM_PATH."/bootstrap.php");
 
 //定义站点名和工作目录
 define('WEBSITE_NAME', $config['website']['name']);
@@ -17,9 +15,11 @@ define('WEBSITE_LOGIN_URL', $config['website']['login_url']);
 define('WORk_DIR', DATA_PATH.'/'.WEBSITE_NAME);
 define('WEBSITE_START_URL', $config['website']['start_url']);
 
-function __crawl_autoload($strClassName) {
-	$strClassName = strtolower($strClassName);
+require_once(SYSTEM_PATH."/bootstrap.php");
 
+function __crawl_autoload($strClassName) {
+	$strClassName = ucwords($strClassName);
+	
 	if($strClassName === 'Crawler'){
 		if(file_exists(SYSTEM_PATH.'/crawler.php')){
 			require_once(SYSTEM_PATH.'/crawler.php');
