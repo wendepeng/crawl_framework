@@ -41,7 +41,7 @@ final class mysql {
 	 */
 	public function open($config = null) {
 		if(!$config){
-			$config_arr = include(dirname(__FILE__).'/config.php');
+			$config_arr = include(APP_PATH.'/config.php');
 			$config = $config_arr['mysql'];
 		}
 		$this->config = $config;
@@ -452,4 +452,6 @@ final class mysql {
 		return $value;
 	}
 }
+
+$mysql = new mysql();
 ?>

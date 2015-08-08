@@ -6,11 +6,15 @@ require_once(dirname(__FILE__).'/load.php');
 
 class Crawler extends PHPCrawler 
 {
+  public $config = array();
   function __construct()
   {
+    global $config;
+    $this->config = $config;
+
     parent::__construct();
     if(WEBSITE_LOGIN_ENABLE){
-      foreach ($login_cookie_array as $key => $value) {
+      foreach ($this->config['website']['login_cookie_array'] as $key => $value) {
         $this->PageRequest->cookie_array[$key] = $value;
       }
     }
@@ -23,6 +27,18 @@ class Crawler extends PHPCrawler
     if ($header->content_type != "text/html"){
       return -1;
     }
+
+    $FLAG = FALSE;
+    foreach ($this->config['website']['crawl_url_regex'] as $url_regex) {
+      if(preg_match($url_regex, $url)){
+        $FLAG = TRUE ;
+      }
+    }
+
+    if(!$FLAG){
+      echo "Passed url: $url Passed\n";
+      return -1;
+    } 
   }
 
   function handleDocumentInfo(PHPCrawlerDocumentInfo $DocInfo) 
@@ -30,6 +46,8 @@ class Crawler extends PHPCrawler
     $url = $DocInfo->url;
     $content = $DocInfo->content;
 
+    if(empty($content)) return ;
+    
     //处理contnet内容
     //...
     
@@ -40,14 +58,13 @@ class Crawler extends PHPCrawler
 
   function lets_go(){
     $this->enableResumption();
-    $this->setWorkingDirectory(WORk_DIR);
-    $this->setUrlCacheType(PHPCrawlerUrlCacheTypes::URLCACHE_SQLITE);
 
     if(!is_dir(WORk_DIR)){
           @mkdir(WORk_DIR) or die('不能创建网站目录');
     }
-
+    $this->setWorkingDirectory(WORk_DIR.'/');
     $guid_file = WORk_DIR."/guid.tmp";
+    $this->setUrlCacheType(PHPCrawlerUrlCacheTypes::URLCACHE_SQLITE);
 
     if (!file_exists($guid_file))
     {
@@ -62,7 +79,7 @@ class Crawler extends PHPCrawler
     $this->setURL(WEBSITE_START_URL);
 
     if(WEBSITE_LOGIN_ENABLE){
-      $this->addPostData($config['website']['login_url_regex'], $config['website']['login_data']);
+      $this->addPostData($this->config['website']['login_url_regex'], $this->config['website']['login_data']);
     }
 
     $this->setParams();

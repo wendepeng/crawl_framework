@@ -28,6 +28,12 @@ require_once(dirname(__FILE__)."/libs/sqlite.class.php");
 //加载model
 require_once(dirname(__FILE__)."/model/model.class.php");
 
+//加载phpQuery
+require_once(dirname(__FILE__)."/libs/phpQuery.php");
+
+//加载mysql数据库实例 $mysql
+require_once(dirname(__FILE__)."/libs/mysql.class.php");
+
 function __crawl_autoload($strClassName) {
 	$strClassName = ucwords($strClassName);
 	

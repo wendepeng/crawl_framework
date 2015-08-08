@@ -1,7 +1,7 @@
 <?php 
-	include '../phpQuery.php'; 
+	include dirname(__FILE__).'/../system/libs/phpQuery.php'; 
 	// phpQuery::newDocumentFile('http://www.zhihu.com/people/da-rou-rou-rou'); 
-	phpQuery::newDocumentLocalFile('/tmp/hah'); 
+	phpQuery::newDocumentFile('/tmp/hahah.html'); 
 	$query_result = pq(".zm-profile-header");
 	$name = $query_result->find('span.name')->html();
 	$intro = $query_result->find('span.bio')->html();
@@ -36,11 +36,18 @@
 	$public_edit = $nums_arr[5];
 
 	$query_result = pq(".zm-profile-side-following a");
+	// file_put_contents('/tmp/xx', var_export($query_result, TRUE));die;
 	$nums_arr = array();
 	foreach ($query_result as $value) {
 	  $nums_arr[] = pq($value)->find('strong')->html();
 	}
-	$focus = $nums_arr[0];
+	$focus     = $nums_arr[0];
 	$followers = $nums_arr[1];
+
+	$title_arr = array();
+	$query_result = pq(".zm-profile-side-topics a");
+	foreach ($query_result as $value) {
+		$title_arr[] = pq($value)->find('img')->attr('title');
+	}
 
 ?>
