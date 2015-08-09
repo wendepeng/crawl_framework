@@ -4,14 +4,11 @@ class model{
 	public $db = null;
 
 	public function __construct(){
-		$this->$db = $sqlite;
+		global $mysql;
+		$this->db = $mysql;
 	}
 
-	public function get_one(){
-		return $this->db->query("select * from ".$this->table_name." limit 1 ;")->fetch();
+	public function select($data, $where = '', $limit = '', $order = '', $group = '', $key = ''){
+		return $this->db->select($data, $this->table_name, $where, $limit, $order, $group, $key);
 	}
-
-	public function get($id = 0){
-		return $this->db->query("select * from ".$this->table_name." where id = $id ;")->fetch();
-	}	
 }

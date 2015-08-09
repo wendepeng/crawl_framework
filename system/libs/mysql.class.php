@@ -118,7 +118,7 @@ final class mysql {
 		if(!is_resource($this->lastqueryid)) {
 			return $this->lastqueryid;
 		}
-
+		
 		$datalist = array();
 		while(($rs = $this->fetch_next()) != false) {
 			if($key) {

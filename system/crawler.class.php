@@ -86,7 +86,8 @@ class Crawler extends PHPCrawler
 
     $this->enableCookieHandling(true);
 
-    $this->go();
+    //需要安装几个php扩展，参考:http://phpcrawl.cuab.de/requirements.html
+    $this->goMultiProcessed(9); 
 
     unlink($guid_file);
     // At the end, after the process is finished, we print a short

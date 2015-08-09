@@ -1,5 +1,5 @@
 <?php
-include(__DIR__.'/../libs/sqlite.php');
+include(__DIR__.'/../system/libs/sqlite.php');
 
 $sqlite = new SQLite('/tmp/test.sqlite');
 //$sqlite->query('create table zh_option(id integer PRIMARY KEY AUTOINCREMENT,name TEXT,value TEXT);');

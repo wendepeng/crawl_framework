@@ -42,13 +42,13 @@ function __crawl_autoload($strClassName) {
 	}
 
 	if($strClassName[0] === 'M'){
-		if(file_exists(SYSTEM_PATH.'/model/'.$strClassName.'.class.php')){
-			require_once(SYSTEM_PATH.'/model/'.$strClassName.'.class.php');
+		if(file_exists(SYSTEM_PATH.'/model/'.strtolower($strClassName).'.class.php')){
+			require_once(SYSTEM_PATH.'/model/'.strtolower($strClassName).'.class.php');
 			return ;
 		}
 
-		if(file_exists(APP_PATH.'/model/'.$strClassName.'.class.php')){
-			require_once(SYSTEM_PATH.'/model/'.$strClassName.'.class.php');
+		if(file_exists(APP_PATH.'/model/'.strtolower($strClassName).'.class.php')){
+			require_once(APP_PATH.'/model/'.strtolower($strClassName).'.class.php');
 			return ;	
 		}
 
